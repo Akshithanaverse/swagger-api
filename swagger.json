@@ -1,0 +1,279 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Akshitha's Swagger API",
+    "description": "REST API for retrieving and managing blog posts.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://jsonplaceholder.typicode.com",
+      "description": "JSONPlaceholder test server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Posts",
+      "description": "Operations for managing blog posts"
+    }
+  ],
+  "paths": {
+    "/posts": {
+      "get": {
+        "tags": ["Posts"],
+        "summary": "List all posts",
+        "description": "Returns a list of blog posts.",
+        "operationId": "listPosts",
+        "responses": {
+          "200": {
+            "description": "Posts retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Post"
+                  }
+                },
+                "example": [
+                  {
+                    "userId": 1,
+                    "id": 1,
+                    "title": "Akshitha's Swagger API",
+                    "body": "This is a sample post returned by the test server."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Posts"],
+        "summary": "Create a new post",
+        "description": "Creates a new blog post.",
+        "operationId": "createPost",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostInput"
+              },
+              "example": {
+                "userId": 1,
+                "title": "Testing POST endpoint",
+                "body": "This post was created using Postman."
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Post created successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                },
+                "example": {
+                  "userId": 1,
+                  "id": 101,
+                  "title": "Testing POST endpoint",
+                  "body": "This post was created using Postman."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid post data."
+          }
+        }
+      }
+    },
+    "/posts/{postId}": {
+      "parameters": [
+        {
+          "name": "postId",
+          "in": "path",
+          "required": true,
+          "description": "The unique ID of the post.",
+          "schema": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 1
+          }
+        }
+      ],
+      "get": {
+        "tags": ["Posts"],
+        "summary": "Get a post by ID",
+        "operationId": "getPost",
+        "responses": {
+          "200": {
+            "description": "Post retrieved successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                },
+                "example": {
+                  "userId": 1,
+                  "id": 1,
+                  "title": "Sample post",
+                  "body": "This is a sample post."
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Post not found."
+          }
+        }
+      },
+      "put": {
+        "tags": ["Posts"],
+        "summary": "Replace a post",
+        "operationId": "replacePost",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostInput"
+              },
+              "example": {
+                "userId": 1,
+                "title": "Replaced post title",
+                "body": "The complete post was replaced."
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Post replaced successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Post not found."
+          }
+        }
+      },
+      "patch": {
+        "tags": ["Posts"],
+        "summary": "Partially update a post",
+        "operationId": "updatePost",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PostUpdate"
+              },
+              "example": {
+                "title": "Updated post title"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Post updated successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Post"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Post not found."
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Posts"],
+        "summary": "Delete a post",
+        "operationId": "deletePost",
+        "responses": {
+          "200": {
+            "description": "Post deleted successfully."
+          },
+          "404": {
+            "description": "Post not found."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Post": {
+        "type": "object",
+        "required": ["userId", "id", "title", "body"],
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "id": {
+            "type": "integer",
+            "readOnly": true,
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "example": "Akshitha's Swagger API"
+          },
+          "body": {
+            "type": "string",
+            "example": "This is a sample blog post."
+          }
+        }
+      },
+      "PostInput": {
+        "type": "object",
+        "required": ["userId", "title", "body"],
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "example": "Testing POST endpoint"
+          },
+          "body": {
+            "type": "string",
+            "example": "This post was created using Postman."
+          }
+        }
+      },
+      "PostUpdate": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "example": "Updated post title"
+          },
+          "body": {
+            "type": "string",
+            "example": "Updated post content."
+          }
+        }
+      }
+    }
+  }
+}
